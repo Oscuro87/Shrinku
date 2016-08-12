@@ -1,37 +1,29 @@
-'use strict';
-
 class MemoryAdapter {
   constructor() {
     this.store = {};
   }
 
-  // find(opts = {}) {
-  //   let data = this.store[opts.hash];
-  //
-  //   if(data)
-  //     return Promise.resolve({ hash: opts.hash, url: data });
-  //   else
-  //     return Promise.reject(new Error('Not found.'));
-  // }
+  findByUrl(opts = {}) {
+    const data = Object.keys(this.store).filter((key) => this.store[key] === opts.url)[0];
 
-  findByHash(hash = {}) {
-    let data = this.store[hash.hash];
+    if (data) return Promise.resolve({ hash: data, url: opts.url });
 
-    if (data) {
-      return Promise.resolve({ hash: hash.hash, url: data });
-    } else {
-      return Promise.reject(new Error('Not found.'));
-    }
+    return Promise.reject(new Error('Not found.'));
   }
 
-  findByUrl(url = {}) {
-    let data = this.store[url.url];
+  findByHash(opts = {}) {
+    const data = this.store[opts.hash];
 
-    if (data) {
-      return Promise.resolve({ hash: data, url: url.url });
-    } else {
-      return Promise.reject(new Error('Not found.'));
-    }
+    if (data) return Promise.resolve({ hash: opts.hash, url: data });
+
+    return Promise.reject(new Error('Not found.'));
+  }
+
+  find(opts = {}) {
+    if (opts.hash) return this.findByHash(opts);
+    if (opts.url) return this.findByUrl(opts);
+
+    return Promise.reject(new Error('No hash or url set.'));
   }
 
   save(opts = {}) {

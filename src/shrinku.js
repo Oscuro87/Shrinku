@@ -1,6 +1,8 @@
-'use strict';
-
 const shortid = require('shortid');
+
+const DumbAdapter = require('./adapters/DumbAdapter');
+const MemoryAdapter = require('./adapters/MemoryAdapter');
+const MemoryAdapter = require('./adapters/MySQLAdapter');
 
 class Shrinku {
   constructor(opts) {
@@ -10,44 +12,47 @@ class Shrinku {
 
   static get Adapters() {
     return {
-      MemoryAdapter: require('./adapters/MemoryAdapter'),
-      MySQLAdapter: require('./adapters/MySQLAdapter')
+      MemoryAdapter,
+      DumbAdapter,
+      MySQLAdapter,
     };
   }
 
   addAdapter(name, adapter, opts) {
-    if(name === 'default')
+    if (name === 'default') {
       return Promise.reject(new Error('Name \'default\' is reserved.'));
+    }
 
-    let adaptersLength = Object.keys(this.adapters).length;
+    const adaptersLength = Object.keys(this.adapters).length;
 
     this.adapters[name] = adapter;
 
-    if(!adaptersLength || !opts) {
-      this.adapters['default'] = this.adapters[name];
+    if (!adaptersLength || !opts) {
+      this.adapters.default = this.adapters[name];
     }
 
     return Promise.resolve(this.adapters[name]);
   }
 
   shrink(opts = {}) {
-    opts = Object.assign({}, {
+    const options = Object.assign({}, {
       save: true,
     }, opts);
+
     return new Promise((resolve, reject) => {
       if(!opts.url) return reject(new Error('No opts.url specified.'));
       if(! ("string" === typeof opts.url)) return reject(new Error('Please provide a string as Url.'));
 
-      let hash = shortid.generate();
+      const hash = shortid.generate();
 
-      if(opts.save && Object.keys(this.adapters).length) {
-        return this.adapters['default'].save({
-          url: opts.url,
-          hash: hash
+      if (options.save && Object.keys(this.adapters).length) {
+        return this.adapters.default.save({
+          url: options.url,
+          hash,
         }).then(resolve);
       }
 
-      return resolve(hash);
+      return resolve({ hash, url: options.url });
     });
   }
 
@@ -56,7 +61,6 @@ class Shrinku {
       if(!opts.hash) return reject(new Error('No opts.hash specified.'));
 
       return this.adapters['default'].findByHash({ hash: opts.hash }).then(resolve);
-
     });
   }
 }

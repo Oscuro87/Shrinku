@@ -28,3 +28,5 @@ shrinku
   .catch((err) => {
     console.log(err);
   });
+
+module.exports = require('./shrinku');
