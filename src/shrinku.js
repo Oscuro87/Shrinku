@@ -27,7 +27,7 @@ class Shrinku {
       this.adapters['default'] = this.adapters[name];
     }
 
-    return Promise.resolve(this.adapters[name]);
+    return Promise.resolve(this.adapters[name](opts));
   }
 
   shrink(opts = {}) {
