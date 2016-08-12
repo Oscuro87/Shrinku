@@ -30,6 +30,7 @@ class MySQLAdapter {
   }
 
   save(opts = {}) {
+
     return Promise.reject(new Error('Under construction.'));
   }
 }
