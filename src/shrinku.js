@@ -55,7 +55,7 @@ class Shrinku {
     return new Promise((resolve, reject) => {
       if(!opts.hash) return reject(new Error('No opts.hash specified.'));
 
-      return this.adapters['default'].find({ hash: opts.hash }).then(resolve);
+      return this.adapters['default'].findByHash({ hash: opts.hash }).then(resolve);
 
     });
   }
