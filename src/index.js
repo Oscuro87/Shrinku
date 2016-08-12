@@ -1,8 +1,8 @@
 const Shrinku = require('./shrinku');
 const shrinku = new Shrinku();
 
-shrinku.addAdapter('memory', new Shrinku.Adapters.MemoryAdapter());
-shrinku.addAdapter('mysql', new Shrinku.Adapters.MySQLAdapter());
+// shrinku.addAdapter('memory', new Shrinku.Adapters.MemoryAdapter());
+shrinku.addAdapter('mysql', new Shrinku.Adapters.MySQLAdapter(), {});
 
 shrinku
   .shrink({ url : 'http://google.be' })

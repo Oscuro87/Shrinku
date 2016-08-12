@@ -23,11 +23,11 @@ class Shrinku {
 
     this.adapters[name] = adapter;
 
-    if(!adaptersLength || opts.default) {
+    if(!adaptersLength || !opts) {
       this.adapters['default'] = this.adapters[name];
     }
 
-    return Promise.resolve(this.adapters[name]);
+    return Promise.resolve(this.adapters[name](opts));
   }
 
   shrink(opts = {}) {
@@ -36,6 +36,7 @@ class Shrinku {
     }, opts);
     return new Promise((resolve, reject) => {
       if(!opts.url) return reject(new Error('No opts.url specified.'));
+      if(! ("string" === typeof opts.url)) return reject(new Error('Please provide a string as Url.'));
 
       let hash = shortid.generate();
 
