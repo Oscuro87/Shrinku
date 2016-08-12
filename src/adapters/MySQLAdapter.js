@@ -9,6 +9,10 @@ var DB = db.DB;
   **/
 class MySQLAdapter {
   constructor(connectionOptions) {
+    console.log("******************************************");
+    console.log(connectionOptions);
+    console.log("******************************************");
+
     this.store = new DB(connectionOptions);
   }
 
@@ -26,7 +30,7 @@ class MySQLAdapter {
   }
 
   save(opts = {}) {
-    
+
     return Promise.reject(new Error('Under construction.'));
   }
 }
