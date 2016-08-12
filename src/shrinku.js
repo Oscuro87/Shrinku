@@ -2,7 +2,7 @@ const shortid = require('shortid');
 
 const DumbAdapter = require('./adapters/DumbAdapter');
 const MemoryAdapter = require('./adapters/MemoryAdapter');
-const MemoryAdapter = require('./adapters/MySQLAdapter');
+const MySQLAdapter = require('./adapters/MySQLAdapter');
 
 class Shrinku {
   constructor(opts) {
