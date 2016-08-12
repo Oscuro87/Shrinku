@@ -14,6 +14,7 @@ class MySQLAdapter {
     console.log("******************************************");
 
     this.store = new DB(connectionOptions);
+    console.log(this.store);
   }
 
   // find(opts = {}) {
